@@ -100,7 +100,7 @@ public class Board implements GameConstants {
         int index = Integer.parseInt(recievedIndex);
 
 
-        if(checkAllEmpty(currentPlayer, index)){
+        if(checkAllEmpty(currentPlayer)){
             moveResponse = MoveResponse.ALL_EMPTY;
         } else if (checkPitEmpty(currentPlayer, index)){
             moveResponse = MoveResponse.PICKED_EMPTY;
@@ -120,10 +120,10 @@ public class Board implements GameConstants {
         return getPit(otherPlayer(currentPlayer), false, index).getBeanCount() == 0;
     }
 
-    private boolean checkAllEmpty (PlayerID currentPlayer, int index){
+    private boolean checkAllEmpty (PlayerID currentPlayer){
         boolean allEmpty = true;
         for (int i = 1; i < HOUSES_PER_PLAYER + 1; i++){
-            if (getPit(otherPlayer(currentPlayer), false, index).getBeanCount() != 0){
+            if (getPit(otherPlayer(currentPlayer), false, i).getBeanCount() != 0){
                 allEmpty = false;
             }
         }
