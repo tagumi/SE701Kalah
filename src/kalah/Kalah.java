@@ -64,9 +64,8 @@ public class Kalah implements GameConstants{
         }
 	}
 
-	//TODO check input is VALID
 	private boolean validInput (String response){
-	    return true;
+	    return (response.length() == 1);
     }
 
     private int getPlayerScore(PlayerID playerID){
