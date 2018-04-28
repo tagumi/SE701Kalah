@@ -12,7 +12,7 @@ public interface GameConstants {
     }
 
     enum MoveResponse {
-        PICKED_EMPTY, ALL_EMPTY, PICK_AGAIN, CAPTURE
+        PICKED_EMPTY, PICK_AGAIN, TURN_OVER
     }
 
     //FILE PATHS

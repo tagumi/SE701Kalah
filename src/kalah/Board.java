@@ -56,8 +56,9 @@ public class Board implements GameConstants {
         }
 
         if (next instanceof House){
-            if (next.getOwner() == id){
+            if ((next.getOwner() == id) && (next.getBeanCount() == 1) && (getOppositePit(next).getBeanCount() != 0)){
                 getPit(id, true, 0).dropBeans(getOppositePit(next).grabBeans());
+                getPit(id, true, 0).dropBeans(next.grabBeans());
             }
         }
 
@@ -94,22 +95,19 @@ public class Board implements GameConstants {
         return pits.get(pitIndex);
     }
 
-    protected MoveResponse makeMove(String recievedIndex, PlayerID currentPlayer) {
+    protected MoveResponse makeMove(String receivedIndex, PlayerID currentPlayer) {
 
-        MoveResponse moveResponse = MoveResponse.PICK_AGAIN;
-        int index = Integer.parseInt(recievedIndex);
+        MoveResponse moveResponse;
+        int index = Integer.parseInt(receivedIndex);
 
-
-        if(checkAllEmpty(currentPlayer)){
-            moveResponse = MoveResponse.ALL_EMPTY;
-        } else if (checkPitEmpty(currentPlayer, index)){
+        if (checkPitEmpty(currentPlayer, index)){
             moveResponse = MoveResponse.PICKED_EMPTY;
         } else {
             Pit lastDrop = dropBeans(currentPlayer, index);
             if (lastDrop instanceof Store){
                 moveResponse = MoveResponse.PICK_AGAIN;
             } else {
-                moveResponse = MoveResponse.CAPTURE;
+                moveResponse = MoveResponse.TURN_OVER;
             }
         }
 
@@ -117,13 +115,13 @@ public class Board implements GameConstants {
     }
 
     private boolean checkPitEmpty (PlayerID currentPlayer, int index){
-        return getPit(otherPlayer(currentPlayer), false, index).getBeanCount() == 0;
+        return getPit(currentPlayer, false, index).getBeanCount() == 0;
     }
 
-    private boolean checkAllEmpty (PlayerID currentPlayer){
+    protected boolean checkAllEmpty (PlayerID currentPlayer){
         boolean allEmpty = true;
         for (int i = 1; i < HOUSES_PER_PLAYER + 1; i++){
-            if (getPit(otherPlayer(currentPlayer), false, i).getBeanCount() != 0){
+            if (getPit(currentPlayer, false, i).getBeanCount() != 0){
                 allEmpty = false;
             }
         }
